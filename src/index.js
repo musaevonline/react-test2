@@ -1,10 +1,11 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
-import { createBrowserRouter, RouterProvider , Navigate} from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import APage from './pages/A';
 import A1Page from './pages/A1';
 import BPage from './pages/B'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const router = createBrowserRouter([
     {
@@ -37,6 +38,19 @@ const router = createBrowserRouter([
     },
 ]);
 
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: Infinity,
+            cacheTime: Infinity,
+            refetchOnWindowFocus: false,
+        },
+    },
+})
 
 const root = createRoot(document.querySelector('#lalala'));
-root.render(<RouterProvider router={router} />)
+root.render((
+    <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+    </QueryClientProvider>
+))
